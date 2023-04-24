@@ -1,4 +1,11 @@
 <div id="viewMap"></div>
+<div id="coordinatesInput" class="form-group">
+    <input type="text" class="form-control mt-2 mb-3 btn-outline-primary" placeholder="Latitude" #Latitude>
+    <input type="text" class="form-control mb-3 outline-secondary" placeholder="Longitude" #Longitude>
+    <input type="button" class="form-control mb-2 btn btn-success" value="Find Location"
+        (click)="goToCoordinate(Latitude.value,Longitude.value)">
+
+</div>
 <div id="coordinates">
     <label id="coordinateX" class="ms-3 h5">la: {{latitude}}</label>
     <label id="coordinateY" class="ms-3 h5">lo: {{longitude}}</label>

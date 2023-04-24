@@ -16,6 +16,8 @@ export class MapViewComponent {
   longitude: string = "";
 
   private container = "viewMap";
+
+  //longitude, latitude
   private centerCoordinates = [35.5, 39];
 
   ngOnInit() {
@@ -225,6 +227,12 @@ export class MapViewComponent {
     }
   }
 
-
+  goToCoordinate(latitude: string, longitude: string) {
+    console.log(latitude);
+    console.log(longitude);
+    this.mapView.goTo({
+      center: [Number(longitude), Number(latitude)],
+    })
+  }
 
 }
