@@ -27,13 +27,14 @@ export class MapViewComponent {
 
       setDefaultOptions({ version: "4.26", css: true });
 
-      const [Map, MapView, config, BasemapToggle, Graphic, GraphicsLayer] = await loadModules([
+      const [Map, MapView, config, BasemapToggle, Graphic, GraphicsLayer, FeatureLayer] = await loadModules([
         'esri/Map',
         'esri/views/MapView',
         'esri/config',
         "esri/widgets/BasemapToggle",
         "esri/Graphic",
         "esri/layers/GraphicsLayer",
+        "esri/layers/FeatureLayer",
       ]);
 
       config.apiKey = "AAPKcc9d8f2cb41049b09e739b345d483129hkNRhKndTx7aF02vO3twu9bp23oeU-jX1bowGJY3s2iPHBLmJTMgHRgK3Rkb5Njf";
@@ -162,6 +163,27 @@ export class MapViewComponent {
           attributes: { Name: 'Polygon', Description: 'Kırıkkale, Çorum, Sivas' },
         });
         graphicsLayer.add(polygonGraphic);
+      }
+
+      //feature layers
+      {
+        //Trailheads feature layer (points)
+        const trailheadsLayer = new FeatureLayer({
+          url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads/FeatureServer/0"
+        });
+        map.add(trailheadsLayer);
+
+        //Trails feature layer (lines)
+        const trailsLayer = new FeatureLayer({
+          url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trails/FeatureServer/0"
+        });
+        map.add(trailsLayer, 1);
+
+        // Parks and open spaces (polygons)
+        const parksLayer = new FeatureLayer({
+          url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Parks_and_Open_Space/FeatureServer/0"
+        });
+        map.add(parksLayer, 0);
       }
 
     } catch (error) {
