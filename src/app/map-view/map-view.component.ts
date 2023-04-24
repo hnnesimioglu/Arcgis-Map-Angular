@@ -27,7 +27,7 @@ export class MapViewComponent {
 
       setDefaultOptions({ version: "4.26", css: true });
 
-      const [Map, MapView, config, BasemapToggle, Graphic, GraphicsLayer, FeatureLayer] = await loadModules([
+      const [Map, MapView, config, BasemapToggle, Graphic, GraphicsLayer, FeatureLayer, Locate] = await loadModules([
         'esri/Map',
         'esri/views/MapView',
         'esri/config',
@@ -35,6 +35,7 @@ export class MapViewComponent {
         "esri/Graphic",
         "esri/layers/GraphicsLayer",
         "esri/layers/FeatureLayer",
+        "esri/widgets/Locate",
       ]);
 
       config.apiKey = "AAPKcc9d8f2cb41049b09e739b345d483129hkNRhKndTx7aF02vO3twu9bp23oeU-jX1bowGJY3s2iPHBLmJTMgHRgK3Rkb5Njf";
@@ -184,6 +185,19 @@ export class MapViewComponent {
           url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Parks_and_Open_Space/FeatureServer/0"
         });
         map.add(parksLayer, 0);
+      }
+
+      //find your location
+      {
+        const locate = new Locate({
+          view: mapView,
+          useHeadingEnabled: false,
+          goToOverride: function (view: any, options: any) {
+            options.target.scale = 1500;
+            return view.goTo(options.target);
+          }
+        });
+        mapView.ui.add(locate, "top-left");
       }
 
     } catch (error) {
