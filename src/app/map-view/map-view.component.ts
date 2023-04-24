@@ -27,11 +27,13 @@ export class MapViewComponent {
 
       setDefaultOptions({ version: "4.26", css: true });
 
-      const [Map, MapView, config, BasemapToggle] = await loadModules([
+      const [Map, MapView, config, BasemapToggle, Graphic, GraphicsLayer] = await loadModules([
         'esri/Map',
         'esri/views/MapView',
         'esri/config',
         "esri/widgets/BasemapToggle",
+        "esri/Graphic",
+        "esri/layers/GraphicsLayer",
       ]);
 
       config.apiKey = "AAPKcc9d8f2cb41049b09e739b345d483129hkNRhKndTx7aF02vO3twu9bp23oeU-jX1bowGJY3s2iPHBLmJTMgHRgK3Rkb5Njf";
@@ -68,6 +70,98 @@ export class MapViewComponent {
           nextBasemap: "arcgis-imagery"
         });
         mapView.ui.add(basemapToggle, "bottom-right");
+      }
+      //popup notification
+      const popupTemplate = {
+        title: "{Name}",
+        content: "{Description}"
+      }
+      const attributes = {
+        Name: String,
+        Description: String
+      }
+
+      //graphicLayer
+      const graphicsLayer = new GraphicsLayer();
+      map.add(graphicsLayer);
+      //add point 
+      {
+        const point = { //Create a point
+          type: "point",
+          longitude: 35.243322,
+          latitude: 38.963745
+        };
+        const simpleMarkerSymbol = {
+          type: "simple-marker",
+          color: [201, 128, 215],  // Orange
+          outline: {
+            color: [255, 255, 255], // White
+            width: 1
+          }
+        };
+
+        const pointGraphic = new Graphic({
+          geometry: point,
+          symbol: simpleMarkerSymbol,
+          popupTemplate: popupTemplate,
+          attributes: { Name: 'Point', Description: 'Center of Turkey' },
+        });
+        graphicsLayer.add(pointGraphic);
+      }
+
+      //add line
+      {
+        // Create a line geometry
+        const polyline = {
+          type: "polyline",
+          paths: [
+            [30.5386, 38.7581], //Longitude, latitude
+            [33.2167, 37.1833], //Longitude, latitude
+            [34.6792, 37.9667]  //Longitude, latitude
+          ]
+        };
+        const simpleLineSymbol = {
+          type: "simple-line",
+          color: [0, 116, 173], // Orange
+          width: 2
+        };
+
+        const polylineGraphic = new Graphic({
+          geometry: polyline,
+          symbol: simpleLineSymbol,
+          popupTemplate: popupTemplate,
+          attributes: { Name: 'Line', Description: 'Afyon, Karaman, Niğde' },
+        });
+        graphicsLayer.add(polylineGraphic);
+      }
+
+      //add polygon
+      {
+        const polygon = {
+          type: "polygon",
+          rings: [
+            [33.5139, 39.8417], //Longitude, latitude
+            [34.9533, 40.5489], //Longitude, latitude
+            [37.0167, 39.7500], //Longitude, latitude
+          ]
+        };
+
+        const simpleFillSymbol = {
+          type: "simple-fill",
+          color: [39, 185, 102, 0.3],  // Orange, opacity 30%
+          outline: {
+            color: [255, 255, 255],
+            width: 1
+          }
+        };
+
+        const polygonGraphic = new Graphic({
+          geometry: polygon,
+          symbol: simpleFillSymbol,
+          popupTemplate: popupTemplate,
+          attributes: { Name: 'Polygon', Description: 'Kırıkkale, Çorum, Sivas' },
+        });
+        graphicsLayer.add(polygonGraphic);
       }
 
     } catch (error) {
