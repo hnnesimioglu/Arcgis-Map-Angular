@@ -27,7 +27,7 @@ export class MapViewComponent {
 
       setDefaultOptions({ version: "4.26", css: true });
 
-      const [Map, MapView, config, BasemapToggle, Graphic, GraphicsLayer, FeatureLayer, Locate] = await loadModules([
+      const [Map, MapView, config, BasemapToggle, Graphic, GraphicsLayer, FeatureLayer, Locate, Search] = await loadModules([
         'esri/Map',
         'esri/views/MapView',
         'esri/config',
@@ -36,6 +36,8 @@ export class MapViewComponent {
         "esri/layers/GraphicsLayer",
         "esri/layers/FeatureLayer",
         "esri/widgets/Locate",
+        "esri/widgets/Search",
+
       ]);
 
       config.apiKey = "AAPKcc9d8f2cb41049b09e739b345d483129hkNRhKndTx7aF02vO3twu9bp23oeU-jX1bowGJY3s2iPHBLmJTMgHRgK3Rkb5Njf";
@@ -198,6 +200,14 @@ export class MapViewComponent {
           }
         });
         mapView.ui.add(locate, "top-left");
+      }
+      //search widget
+      {
+        const search = new Search({  //Add Search widget
+          view: mapView
+        });
+
+        mapView.ui.add(search, "top-right"); //Add to the mapd
       }
 
     } catch (error) {
