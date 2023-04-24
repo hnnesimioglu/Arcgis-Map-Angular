@@ -27,14 +27,14 @@ export class MapViewComponent {
 
       setDefaultOptions({ version: "4.26", css: true });
 
-      const [Map, MapView, config] = await loadModules([
+      const [Map, MapView, config, BasemapToggle] = await loadModules([
         'esri/Map',
         'esri/views/MapView',
         'esri/config',
+        "esri/widgets/BasemapToggle",
       ]);
 
       config.apiKey = "AAPKcc9d8f2cb41049b09e739b345d483129hkNRhKndTx7aF02vO3twu9bp23oeU-jX1bowGJY3s2iPHBLmJTMgHRgK3Rkb5Njf";
-
 
       const mapProperties: esri.MapProperties = {
         basemap: this.defaultBasemap
@@ -61,6 +61,14 @@ export class MapViewComponent {
         console.log("harita yüklendi");
       });
 
+      //basemap toggle
+      {
+        const basemapToggle = new BasemapToggle({
+          view: mapView,
+          nextBasemap: "arcgis-imagery"
+        });
+        mapView.ui.add(basemapToggle, "bottom-right");
+      }
 
     } catch (error) {
       console.error('hata olustu: ' + error);
