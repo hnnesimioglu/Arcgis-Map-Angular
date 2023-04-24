@@ -1,0 +1,20 @@
+html {
+    padding: 0;
+    margin: 0;
+}
+
+#viewMap {
+    margin: 0;
+    height: 98vh;
+    width: 100%;
+}
+
+#coordinates {
+    min-width: 480px;
+    position: fixed;
+    text-align: center;
+    background-color: #D2F4EA;
+    top: 92%;
+    right: 1%;
+    color: #0d6efd;
+}
